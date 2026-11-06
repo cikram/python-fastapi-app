@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      APP_NAME: MonApplication
+      APP_NAME: fastapi-starter
 
     steps:
       - name: Afficher les informations du dépôt
@@ -21,3 +21,11 @@ jobs:
         run: |
           echo "OS: ${{ runner.os }}"
           echo "Architecture: ${{ runner.arch }}"
+      - name: Afficher les valeurs de contexte (Q8)
+        run: |
+          echo "Application: ${{ env.APP_NAME }}"
+          echo "Acteur: ${{ github.actor }}"
+          echo "Evenement: ${{ github.event_name }}"
+          echo "Branche: ${{ github.ref_name }}"
+          echo "SHA: ${{ github.sha }}"
+          echo "OS du runner: ${{ runner.os }}"
