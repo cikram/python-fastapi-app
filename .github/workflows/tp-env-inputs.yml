@@ -10,6 +10,10 @@ on:
       version:
         description: "Version à déployer"
         default: "1.0.0"
+      debug:
+        description: "Activer le mode debug"
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -30,6 +34,14 @@ jobs:
         run: |
           echo "Environment: ${{ inputs.environment }}"
           echo "Version: ${{ inputs.version }}"
+
+      - name: Print debug information
+        if: ${{ inputs.debug }}
+        run: |
+          echo "Debug mode enabled"
+          echo "Runner OS: $RUNNER_OS"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch: $GITHUB_REF_NAME"
 
   verify-env:
     runs-on: ubuntu-latest
