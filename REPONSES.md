@@ -39,3 +39,19 @@ workflow et sur n'importe quel système (Linux, Windows, macOS), et elle n'héri
 shell par défaut défini par le workflow appelant. GitHub impose donc de déclarer
 explicitement le shell pour que le comportement soit identique partout. Sans lui,
 l'action est rejetée.
+
+## Partie 4 : comparaison des temps d'exécution
+
+| Action | Step observé | Durée |
+|---|---|---|
+| Composite (`build-info`) | Run build info action (job `build`) | 0 s |
+| Docker (`docker-hello`) | Run docker hello action (job `docker-hello`) | 2 s |
+
+L'action Docker est plus lente que l'action composite. L'action composite exécute ses
+steps directement sur le runner, déjà prêt, alors que l'action Docker doit d'abord
+construire l'image à partir du `Dockerfile` (récupération d'Alpine, copie du script),
+puis démarrer un conteneur avant d'exécuter `entrypoint.sh`. La comparaison porte sur
+la durée des steps et non sur celle des jobs, car le job `build` contient d'autres steps
+(par exemple `Setup Node.js`, 4 s) qui rendent sa durée totale (10 s) non comparable à
+celle du job `docker-hello` (5 s). Une action Docker est utile quand on a besoin d'un
+environnement précis et isolé, au prix de ce temps de construction supplémentaire.
