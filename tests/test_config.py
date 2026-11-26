@@ -17,14 +17,17 @@ def test_settings_default_values():
 
 def test_settings_from_env_vars():
     """Test that Settings can be overridden by environment variables."""
-    with patch.dict(os.environ, {
-        'APP_NAME': 'Test App',
-        'APP_ENV': 'production',
-        'DEBUG': 'true',
-        'HOST': '127.0.0.1',
-        'PORT': '9000',
-        'LOG_LEVEL': 'debug'
-    }):
+    with patch.dict(
+        os.environ,
+        {
+            "APP_NAME": "Test App",
+            "APP_ENV": "production",
+            "DEBUG": "true",
+            "HOST": "127.0.0.1",
+            "PORT": "9000",
+            "LOG_LEVEL": "debug",
+        },
+    ):
         test_settings = Settings()
         assert test_settings.APP_NAME == "Test App"
         assert test_settings.APP_ENV == "production"
@@ -44,10 +47,10 @@ def test_settings_model_config():
     """Test that the Settings class has proper model configuration."""
     test_settings = Settings()
     model_config = test_settings.model_config
-    
-    assert model_config['env_file'] == ".env"
-    assert model_config['env_file_encoding'] == "utf-8"
-    assert model_config['extra'] == "ignore"
+
+    assert model_config["env_file"] == ".env"
+    assert model_config["env_file_encoding"] == "utf-8"
+    assert model_config["extra"] == "ignore"
 
 
 def test_settings_port_type():
@@ -64,11 +67,8 @@ def test_settings_debug_type():
 
 def test_settings_with_unknown_env_vars():
     """Test Settings with unknown environment variables are ignored."""
-    with patch.dict(os.environ, {
-        'APP_ENV': 'test',
-        'UNKNOWN_VAR': 'should_be_ignored'
-    }):
+    with patch.dict(os.environ, {"APP_ENV": "test", "UNKNOWN_VAR": "should_be_ignored"}):
         test_settings = Settings()
         assert test_settings.APP_ENV == "test"
         # Should not raise an error due to extra="ignore"
-        assert not hasattr(test_settings, 'UNKNOWN_VAR')
+        assert not hasattr(test_settings, "UNKNOWN_VAR")

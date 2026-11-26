@@ -2,10 +2,13 @@ import logging
 
 LEVELS = {"fatal": 50, "error": 40, "warn": 30, "info": 20, "debug": 10, "trace": 5}
 
+
 class _Trace(logging.DEBUG.__class__):
     level = 5
 
+
 logging.addLevelName(5, "TRACE")
+
 
 def get_logger(name: str = "app") -> logging.Logger:
     logger = logging.getLogger(name)
